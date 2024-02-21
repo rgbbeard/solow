@@ -1,0 +1,66 @@
+// colors
+$primary-color:#38b6ff;
+$lighter-color:#52bfff;
+$darker-color:#1579b3;
+$secondary-color:#b36804;
+$tertiary-color:#ffaa38;
+$default-black:#000;
+$default-grey:#ccc;
+$default-light-dark:#333;
+$dark-grey:#888;
+$light-grey:#efefef;
+$transparent-black:#0005;
+$error-color:#900;
+$success-color:#090;
+$instagram-color:#ea34bb;
+$facebook-color:#3b579d;
+
+$colors-map: (
+	white: #fff,
+	primary: $primary-color,
+	lighter: $lighter-color,
+	darker: $darker-color,
+	secondary: $secondary-color,
+	tertiary: $tertiary-color,
+	default-black: $default-black,
+	default-grey: $default-grey,
+	default-light-dark: $default-light-dark,
+	dark-grey: $dark-grey,
+	light-grey: $light-grey,
+	transparent-black: $transparent-black,
+	error: $error-color,
+	success: $success-color,
+	instagram: $instagram-color,
+	facebook: $facebook-color
+);
+
+
+$widths:25,33,50,75;
+$margins:5,10,15,20,25,30;
+
+$sides:"left","right","top","bottom";
+$sides-v:"top","bottom";
+$sides-o:"left","right";
+// fonts paths
+$lato-path:"../font/Lato/";
+$dm-mono-path:"../font/DM_Mono/";
+$satisfy-path:"../font/Satisfy/";
+// headers
+$hs:7,8,9,10,11,12,13,14,15,17,18,19,20;
+// media screen sizes
+$phone-xs:320px;
+$phone-s:480px;
+$phone-l:768px;
+
+$tablet-xs:601px;
+$tablet-s:768px;
+$tablet-m:992px;
+$tablet-l:1200px;
+
+$pc-xs:1024px;
+$pc-s:1366px;
+$pc-m:1600px;
+$pc-l:1920px;
+$pc-xl:2560px;
+//system
+$debug:false;

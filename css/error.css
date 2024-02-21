@@ -1,0 +1,14 @@
+main,
+main * {
+	user-select:none;
+	-moz-user-select:none;
+	-webkit-user-select:none;
+}
+
+main article {
+	display:flex;
+	align-items:center;
+	align-content:center;
+	justify-content:center;
+	flex-direction:column;
+}

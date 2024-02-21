@@ -1,0 +1,128 @@
+/* navbar */
+#navbar {
+	width:100%;
+	padding:0 8px;
+	min-height:30px;
+	background-color:$primary-color;
+}
+
+#navbar .container,
+#navbar-mobile .container {
+	margin-top:0;
+	margin-bottom:0;
+}
+
+#navbar .nav-logo-container,
+#navbar .nav-main-menu {
+	display:inline-block;
+	vertical-align:middle;
+}
+
+#navbar .nav-logo-container {
+	width:6vw;
+}
+
+#navbar .nav-logo-container img {
+	width:100%;
+	max-height:80px;
+}
+
+#navbar .nav-main-menu {
+	width:50vw;
+	margin:0 10px;
+	padding:0 5px;
+}
+
+#navbar .nav-main-menu li {
+	line-height:80px;
+	display:inline-block;
+	padding:0 10px;
+	font-size:1.2rem;
+	height:100%;
+	min-width:50px;
+	max-width:100%;
+	position:relative;
+}
+
+#navbar .nav-main-menu li::after {
+	content:"";
+	background-color:#fff;
+	width:0%;
+	height:2.5px;
+	position:absolute;
+	bottom:5px;
+	left:50%;
+	right:0;
+	transition:all 0.1s;
+}
+
+#navbar .nav-main-menu li:hover::after {
+	transition:all 0.3s;
+}
+
+#navbar .nav-main-menu li.selected {
+	color:#fff;
+}
+
+#navbar .nav-main-menu li.selected::after,
+#navbar .nav-main-menu li:hover::after {
+ 	width:100%;
+ 	left:0;
+}
+
+/* navbar mobile */
+#navbar-mobile {
+	display:none;
+	width:100%;
+	background-color:$primary-color;
+}
+
+#navbar-mobile .nav-logo-container {
+	width:100%;
+}
+
+#navbar-mobile .nav-logo-container img {
+	max-height:100px;
+	margin:0 auto;
+	display:block;
+}
+
+#navbar-mobile .nav-main-menu #nav-trigger,
+#navbar-mobile #menu-trigger {
+	background-color:transparent;
+	border:none;
+	width:40px;
+	height:40px;
+}
+#navbar-mobile .nav-main-menu #nav-trigger img,
+#navbar-mobile #menu-trigger img {
+	width:100%;
+}
+#navbar-mobile #menu-trigger {
+	position:absolute;
+	top:10px;
+	left:10px;
+}
+
+#navbar-mobile .nav-main-menu {
+	display:none;
+	position:fixed;
+	top:0;
+	left:0;
+	right:0;
+	bottom:0;
+	background-color:$primary-color;
+	z-index:9999;
+	padding:10px;
+}
+
+#navbar-mobile .nav-main-menu .navbar-item {
+	width: 100%;
+	display: inline-block;
+	line-height: 30px;
+	padding: 10px;
+}
+
+#navbar-mobile .nav-main-menu .navbar-item.selected {
+	background-color:#fff;
+}

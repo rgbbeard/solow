@@ -1,0 +1,925 @@
+:root {
+    --btn-padding:0.4em 0.6em;
+    --input-padding:0.3em 0.6em;
+    --default-border-radius:3px;
+}
+
+*[ignore] {
+        visibility: hidden;
+        opacity: 0;
+}
+
+a[link] {
+        position: relative;
+        color: #555;
+        text-decoration: none !important;
+}
+
+a[link]::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: -50%;
+        height: 1px;
+        background-color: transparent;
+        transition: all 0.3s;
+}
+
+a[link]:hover::after {
+        background-color: #888;
+}
+
+*[hidden] {
+        display: none !important;
+        visibility: hidden;
+}
+
+/*Custom checkbox*/
+.checkbox-input label {
+        width: 20px;
+        height: 20px;
+        display: inline-block;
+        background-color: #e6e6e6;
+        border: solid 1px #ccc;
+        border-radius: var(--default-border-radius);
+        cursor: pointer;
+        vertical-align: middle;
+        position: relative;
+}
+
+.checkbox-input input[type="checkbox"] {
+        display: none;
+}
+
+.checkbox-input input[type="checkbox"]:checked+label {
+        background-color: #0f0;
+        border-color: transparent;
+}
+
+.checkbox-input input[type="checkbox"]:checked+label::after {
+        position: absolute;
+        content: "";
+        display: inline-block;
+        animation-name: ripple-animation;
+        animation-duration: 1s;
+        animation-iteration-count: 1;
+        background-color: rgba(0, 0, 0, 0.6);
+        border-radius: 100px;
+}
+
+@keyframes ripple-animation {
+        from {
+                left: 100%;
+                right: 100%;
+                bottom: 100%;
+                top: 100%;
+        }
+
+        to {
+                left: -100%;
+                right: -100%;
+                bottom: -100%;
+                top: -100%;
+                opacity: 0;
+        }
+}
+
+/*Spinners*/
+spinner-ring {
+        border-style: solid;
+        animation-name: SpinRing;
+        border-width: 6px;
+        border-color: #fff;
+        margin: 0px auto;
+        animation-duration: 1s;
+        animation-delay: 0.5s;
+}
+
+spinner {
+        border-style: dotted;
+        animation-name: Spin;
+        /*Widths*/
+        border-top-width: 6px;
+        border-right-width: 4px;
+        border-bottom-width: 2px;
+        border-left-width: 1px;
+        /*Colors*/
+        border-top-color: #fff;
+        border-right-color: #ffffffaa;
+        border-bottom-color: #ffffff88;
+        border-left-color: #ffffff44;
+        animation-duration: 0.8s;
+}
+
+spinner,
+spinner-ring {
+        display: inline-block;
+        width: 60px;
+        height: 60px;
+        border-radius: 30px;
+        /*Animation*/
+        animation-iteration-count: infinite;
+        animation-fill-mode: forwards;
+        transition: all 0.5s;
+}
+
+spinner.red {
+        border-top-color: #f00;
+        border-right-color: #ff0000aa;
+        border-bottom-color: #ff000088;
+        border-left-color: #ff000044;
+}
+
+spinner-ring.gold {
+        border-color: #ffaa00;
+}
+
+spinner-ring.coin {
+        background-color: #ffaa00;
+        box-shadow: 0px 0px 2px #000 inset;
+}
+
+spinner-ring.small,
+spinner-ring.medium {
+        box-shadow: none;
+}
+
+spinner-ring.medium {
+        width: 25px;
+        height: 25px;
+        animation-name: MediumSpinRing;
+}
+
+spinner-ring.small {
+        width: 20px;
+        height: 20px;
+        animation-name: SmallSpinRing;
+        background-color: transparent;
+}
+
+spinner-ring.inverse {
+        filter: invert(100%);
+}
+
+spinner-container {
+        display: grid;
+        width: 100%;
+        height: 100%;
+        position: fixed;
+        top: 0px;
+        left: 0px;
+        bottom: 0px;
+        right: 0px;
+        z-index: 999999999999999;
+        background-color: rgba(0, 0, 0, 0.8);
+        color: #fff;
+        align-items: center;
+        justify-content: center;
+}
+
+spinner-container * {
+        text-align: center;
+}
+
+/*Spinners animations*/
+@keyframes Spin {
+        from {
+                transform: rotate(0deg);
+        }
+
+        25% {
+                transform: rotate(90deg);
+        }
+
+        50% {
+                transform: rotate(180deg);
+        }
+
+        75% {
+                transform: rotate(260deg);
+        }
+
+        to {
+                transform: rotate(360deg);
+        }
+}
+
+@keyframes SpinRing {
+        from {
+                transform: rotate(0deg);
+                width: 60px;
+        }
+
+        10% {
+                width: 30px;
+        }
+
+        25% {
+                width: 15px;
+        }
+
+        50% {
+                width: 30px;
+        }
+
+        75% {
+                width: 15px;
+        }
+
+        90% {
+                width: 30px;
+        }
+
+        to {
+                transform: rotate(360deg);
+                width: 60px;
+        }
+}
+
+@keyframes MediumSpinRing {
+        from {
+                transform: rotate(0deg);
+                width: 25px;
+        }
+
+        10% {
+                width: 20px;
+        }
+
+        25% {
+                width: 18px;
+        }
+
+        50% {
+                width: 15px;
+        }
+
+        75% {
+                width: 18px;
+        }
+
+        90% {
+                width: 20px;
+        }
+
+        to {
+                transform: rotate(360deg);
+                width: 25px;
+        }
+}
+
+@keyframes SmallSpinRing {
+        from {
+                transform: rotate(0deg);
+                width: 20px;
+        }
+
+        10% {
+                width: 18px;
+        }
+
+        25% {
+                width: 15px;
+        }
+
+        50% {
+                width: 10px;
+        }
+
+        75% {
+                width: 15px;
+        }
+
+        90% {
+                width: 18px;
+        }
+
+        to {
+                transform: rotate(360deg);
+                width: 20px;
+        }
+}
+
+/*Toast*/
+.toast {
+        width: 40vw;
+        height: 50px;
+        max-height: 80px;
+        background-color: rgba(0, 0, 0, 0.6);
+        color: #fff;
+        padding: 10px;
+        position: fixed;
+        box-shadow: 0px 2px 10px #333;
+        border-radius: 4px;
+        z-index: 9999999999999;
+}
+
+.toast.left {
+        left: 15px;
+}
+
+.toast.top {
+        top: 15px;
+}
+
+.toast.bot {
+        bottom: 15px;
+}
+
+.toast.right {
+        right: 15px;
+}
+
+.toast.bot.center,
+.toast.top.center {
+        left: 30vw;
+        right: 30vw;
+}
+
+.toast.left.center,
+.toast.right.center {
+        top: 45%;
+        bottom: 45%;
+}
+
+.toast.success {
+        background-color: #0f8;
+        color: #000;
+}
+
+.toast.warning {
+        background-color: #fc0;
+        color: #000;
+}
+
+.toast.error {
+        background-color: #f30;
+}
+
+.toast.error * {
+        color: #fff;
+}
+
+.toast>div {
+        margin: 0 auto;
+}
+
+/*Interface*/
+.interface-background {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: fixed;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        background-color: rgba(0, 0, 0, 0.6);
+        z-index: 9999999999;
+}
+
+.interface-background .interface {
+        width: 80%;
+        height: 80%;
+        background-color: #fff;
+        border-radius: 10px;
+        overflow: hidden;
+}
+
+.interface-background .interface .interface-title-bar {
+        /* background-color: #0df; */
+        color: #000;
+        padding: 5px 10px;
+}
+
+.interface-background .interface .interface-title-bar * {
+        display: inline-block;
+}
+
+.interface-background .interface .interface-title-bar .interface-close-btn {
+        margin: 0px 5px;
+}
+
+.interface-background .interface .interface-body {
+        padding: 5px 10px;
+        overflow-y: scroll;
+        overflow-x: hidden;
+}
+
+/*Custom confirm prompt*/
+.confirm-window-background {
+        background-color: rgba(0, 0, 0, 0.4);
+        display: flex;
+        align-items: center;
+        position: fixed;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        z-index: 9999999999;
+}
+
+.confirm-window-background .confirm-window-content {
+        min-width: 300px;
+        margin: 0 auto;
+        padding: 10px;
+        background-color: #fff;
+        border-radius: var(--default-border-radius);
+}
+
+.confirm-window-background .confirm-window-content .btn-ripple {
+        margin: 0 5px;
+}
+
+/*Form controls*/
+.input-group,
+.input-group label {
+        width: 100%;
+        margin: 0 auto 10px;
+}
+
+.input-group input {
+        width: 100%;
+        max-width: 300px;
+}
+
+.input-group label {
+        display: inline-block;
+        text-align: left;
+}
+
+/*Alerts*/
+.banner {
+        display: block;
+        width: 100%;
+        outline: solid 1px #ccc;
+}
+
+.banner.error {
+        outline-color: #900;
+        background-color: #7004;
+        padding: 10px;
+}:root {
+    --btn-padding:0.4em 0.6em;
+    --input-padding:0.3em 0.6em;
+    --default-border-radius:3px;
+}
+
+*[ignore] {
+        visibility: hidden;
+        opacity: 0;
+}
+
+a[link] {
+        position: relative;
+        color: #555;
+        text-decoration: none !important;
+}
+
+a[link]::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: -50%;
+        height: 1px;
+        background-color: transparent;
+        transition: all 0.3s;
+}
+
+a[link]:hover::after {
+        background-color: #888;
+}
+
+*[hidden] {
+        display: none !important;
+        visibility: hidden;
+}
+
+/*Custom checkbox*/
+.checkbox-input label {
+        width: 20px;
+        height: 20px;
+        display: inline-block;
+        background-color: #e6e6e6;
+        border: solid 1px #ccc;
+        border-radius: var(--default-border-radius);
+        cursor: pointer;
+        vertical-align: middle;
+        position: relative;
+}
+
+.checkbox-input input[type="checkbox"] {
+        display: none;
+}
+
+.checkbox-input input[type="checkbox"]:checked+label {
+        background-color: #0f0;
+        border-color: transparent;
+}
+
+.checkbox-input input[type="checkbox"]:checked+label::after {
+        position: absolute;
+        content: "";
+        display: inline-block;
+        animation-name: ripple-animation;
+        animation-duration: 1s;
+        animation-iteration-count: 1;
+        background-color: rgba(0, 0, 0, 0.6);
+        border-radius: 100px;
+}
+
+@keyframes ripple-animation {
+        from {
+                left: 100%;
+                right: 100%;
+                bottom: 100%;
+                top: 100%;
+        }
+
+        to {
+                left: -100%;
+                right: -100%;
+                bottom: -100%;
+                top: -100%;
+                opacity: 0;
+        }
+}
+
+/*Spinners*/
+spinner-ring {
+        border-style: solid;
+        animation-name: SpinRing;
+        border-width: 6px;
+        border-color: #fff;
+        margin: 0px auto;
+        animation-duration: 1s;
+        animation-delay: 0.5s;
+}
+
+spinner {
+        border-style: dotted;
+        animation-name: Spin;
+        /*Widths*/
+        border-top-width: 6px;
+        border-right-width: 4px;
+        border-bottom-width: 2px;
+        border-left-width: 1px;
+        /*Colors*/
+        border-top-color: #fff;
+        border-right-color: #ffffffaa;
+        border-bottom-color: #ffffff88;
+        border-left-color: #ffffff44;
+        animation-duration: 0.8s;
+}
+
+spinner,
+spinner-ring {
+        display: inline-block;
+        width: 60px;
+        height: 60px;
+        border-radius: 30px;
+        /*Animation*/
+        animation-iteration-count: infinite;
+        animation-fill-mode: forwards;
+        transition: all 0.5s;
+}
+
+spinner.red {
+        border-top-color: #f00;
+        border-right-color: #ff0000aa;
+        border-bottom-color: #ff000088;
+        border-left-color: #ff000044;
+}
+
+spinner-ring.gold {
+        border-color: #ffaa00;
+}
+
+spinner-ring.coin {
+        background-color: #ffaa00;
+        box-shadow: 0px 0px 2px #000 inset;
+}
+
+spinner-ring.small,
+spinner-ring.medium {
+        box-shadow: none;
+}
+
+spinner-ring.medium {
+        width: 25px;
+        height: 25px;
+        animation-name: MediumSpinRing;
+}
+
+spinner-ring.small {
+        width: 20px;
+        height: 20px;
+        animation-name: SmallSpinRing;
+        background-color: transparent;
+}
+
+spinner-ring.inverse {
+        filter: invert(100%);
+}
+
+spinner-container {
+        display: grid;
+        width: 100%;
+        height: 100%;
+        position: fixed;
+        top: 0px;
+        left: 0px;
+        bottom: 0px;
+        right: 0px;
+        z-index: 999999999999999;
+        background-color: rgba(0, 0, 0, 0.8);
+        color: #fff;
+        align-items: center;
+        justify-content: center;
+}
+
+spinner-container * {
+        text-align: center;
+}
+
+/*Spinners animations*/
+@keyframes Spin {
+        from {
+                transform: rotate(0deg);
+        }
+
+        25% {
+                transform: rotate(90deg);
+        }
+
+        50% {
+                transform: rotate(180deg);
+        }
+
+        75% {
+                transform: rotate(260deg);
+        }
+
+        to {
+                transform: rotate(360deg);
+        }
+}
+
+@keyframes SpinRing {
+        from {
+                transform: rotate(0deg);
+                width: 60px;
+        }
+
+        10% {
+                width: 30px;
+        }
+
+        25% {
+                width: 15px;
+        }
+
+        50% {
+                width: 30px;
+        }
+
+        75% {
+                width: 15px;
+        }
+
+        90% {
+                width: 30px;
+        }
+
+        to {
+                transform: rotate(360deg);
+                width: 60px;
+        }
+}
+
+@keyframes MediumSpinRing {
+        from {
+                transform: rotate(0deg);
+                width: 25px;
+        }
+
+        10% {
+                width: 20px;
+        }
+
+        25% {
+                width: 18px;
+        }
+
+        50% {
+                width: 15px;
+        }
+
+        75% {
+                width: 18px;
+        }
+
+        90% {
+                width: 20px;
+        }
+
+        to {
+                transform: rotate(360deg);
+                width: 25px;
+        }
+}
+
+@keyframes SmallSpinRing {
+        from {
+                transform: rotate(0deg);
+                width: 20px;
+        }
+
+        10% {
+                width: 18px;
+        }
+
+        25% {
+                width: 15px;
+        }
+
+        50% {
+                width: 10px;
+        }
+
+        75% {
+                width: 15px;
+        }
+
+        90% {
+                width: 18px;
+        }
+
+        to {
+                transform: rotate(360deg);
+                width: 20px;
+        }
+}
+
+/*Toast*/
+.toast {
+        width: 40vw;
+        height: 50px;
+        max-height: 80px;
+        background-color: rgba(0, 0, 0, 0.6);
+        color: #fff;
+        padding: 10px;
+        position: fixed;
+        box-shadow: 0px 2px 10px #333;
+        border-radius: 4px;
+        z-index: 9999999999999;
+}
+
+.toast.left {
+        left: 15px;
+}
+
+.toast.top {
+        top: 15px;
+}
+
+.toast.bot {
+        bottom: 15px;
+}
+
+.toast.right {
+        right: 15px;
+}
+
+.toast.bot.center,
+.toast.top.center {
+        left: 30vw;
+        right: 30vw;
+}
+
+.toast.left.center,
+.toast.right.center {
+        top: 45%;
+        bottom: 45%;
+}
+
+.toast.success {
+        background-color: #0f8;
+        color: #000;
+}
+
+.toast.warning {
+        background-color: #fc0;
+        color: #000;
+}
+
+.toast.error {
+        background-color: #f30;
+}
+
+.toast.error * {
+        color: #fff;
+}
+
+.toast>div {
+        margin: 0 auto;
+}
+
+/*Interface*/
+.interface-background {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: fixed;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        background-color: rgba(0, 0, 0, 0.6);
+        z-index: 9999999999;
+}
+
+.interface-background .interface {
+        width: 80%;
+        height: 80%;
+        background-color: #fff;
+        border-radius: 10px;
+        overflow: hidden;
+}
+
+.interface-background .interface .interface-title-bar {
+        /* background-color: #0df; */
+        color: #000;
+        padding: 5px 10px;
+}
+
+.interface-background .interface .interface-title-bar * {
+        display: inline-block;
+}
+
+.interface-background .interface .interface-title-bar .interface-close-btn {
+        margin: 0px 5px;
+}
+
+.interface-background .interface .interface-body {
+        padding: 5px 10px;
+        overflow-y: scroll;
+        overflow-x: hidden;
+}
+
+/*Custom confirm prompt*/
+.confirm-window-background {
+        background-color: rgba(0, 0, 0, 0.4);
+        display: flex;
+        align-items: center;
+        position: fixed;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        z-index: 9999999999;
+}
+
+.confirm-window-background .confirm-window-content {
+        min-width: 300px;
+        margin: 0 auto;
+        padding: 10px;
+        background-color: #fff;
+        border-radius: var(--default-border-radius);
+}
+
+.confirm-window-background .confirm-window-content .btn-ripple {
+        margin: 0 5px;
+}
+
+/*Form controls*/
+.input-group,
+.input-group label {
+        width: 100%;
+        margin: 0 auto 10px;
+}
+
+.input-group input {
+        width: 100%;
+        max-width: 300px;
+}
+
+.input-group label {
+        display: inline-block;
+        text-align: left;
+}
+
+/*Alerts*/
+.banner {
+        display: block;
+        width: 100%;
+        outline: solid 1px #ccc;
+}
+
+.banner.error {
+        outline-color: #900;
+        background-color: #7004;
+        padding: 10px;
+}

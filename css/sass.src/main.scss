@@ -1,0 +1,304 @@
+//Using Ruby Sass 3.7.4
+
+@import "./lib.css";
+@import "./buttons.css";
+@import "./media.css";
+@import "./vars.scss";
+
+@font-face {
+	font-family:"Lato";
+	src:
+		url("#{$lato-path}Lato-Regular.ttf"), format("truetype"),
+		url("#{$lato-path}Lato-BoldItalic.ttf"), format("truetype"), 
+		url("#{$lato-path}Lato-Bold.ttf"), format("truetype"), 
+		url("#{$lato-path}Lato-LightItalic.ttf"), format("truetype"), 
+		url("#{$lato-path}Lato-Light.ttf"), format("truetype"), 
+		url("#{$lato-path}Lato-Italic.ttf"), format("truetype"), 
+		url("#{$lato-path}Lato-Black.ttf"), format("truetype"), 
+		url("#{$lato-path}Lato-BlackItalic.ttf"), format("truetype"), 
+		url("#{$lato-path}Lato-Thin.ttf"), format("truetype"), 
+		url("#{$lato-path}Lato-ThinItalic.ttf"), format("truetype");
+}
+
+@font-face {
+	font-family:"DM Mono";
+	src:
+		url("#{$dm-mono-path}DMMono-Regular.ttf"), format("truetype"),
+		url("#{$dm-mono-path}DMMono-MediumItalic.ttf"), format("truetype"), 
+		url("#{$dm-mono-path}DMMono-Medium.ttf"), format("truetype"), 
+		url("#{$dm-mono-path}DMMono-LightItalic.ttf"), format("truetype"), 
+		url("#{$dm-mono-path}DMMono-Light.ttf"), format("truetype"), 
+		url("#{$dm-mono-path}DMMono-Italic.ttf"), format("truetype");
+}
+
+@font-face {
+	font-family:"Satisfy";
+	src:url("#{$satisfy-path}Satisfy-Regular.ttf"), format("truetype");
+}
+
+* {
+	font-family:"Lato";
+	box-sizing:border-box;
+	color:$default-light-dark;
+	@if $debug {
+		/* show widths and heights */
+		outline:dashed 1px #0f0;
+	}
+}
+
+html, body {
+	padding:0;
+	margin:0;
+	background-color:$light-grey;
+	background-image:url("../img/background.jpg");
+	background-size:10%;
+}
+
+main {
+	margin:0;
+	padding:0 15px;
+}
+
+button, input, select, textarea {
+	appearance:none;
+	border:solid 1px $default-grey;
+	padding:0.5em;
+}
+
+a {
+	text-decoration:none !important;
+}
+
+hmax {
+	font-size:10rem;
+	font-weight:bold;
+	text-align:center;
+	display:block;
+}
+
+[separator] {
+    width:100%;
+    height:1px;
+    margin:10px 0;
+    padding:0;
+    display:inline-block;
+    opacity:0;
+    visibility:hidden;
+}
+
+ul li,
+ul {
+    margin:0 !important;
+    padding:0 !important;
+}
+
+ul li {
+    list-style-type:none !important;
+}
+
+section {
+	margin:10px 0;
+}
+
+/*general*/
+.font-fancy {
+	font-family:"Satisfy";
+	font-size:30px;
+}
+
+@each $color, $value in $colors-map {
+  .#{$color}-color {
+    color: $value !important;
+  }
+  .#{$color}-bg-color {
+    background-color: $value !important;
+  }
+}
+
+.text-center {
+	text-align:center !important;
+}
+
+.text-uppercase {
+	text-transform:uppercase;
+}
+
+.full-width {
+	width:100% !important;
+}
+
+.container {
+	width:80%;
+	margin:5px auto;
+}
+
+body .container {
+	margin-top:20px;
+}
+
+@each $width in $widths {
+	$value:$width + "%";
+	.w-#{$width} {
+		width:#{$value} !important;
+		display:inline-block;
+	}
+}
+
+@each $margin in $margins {
+	$value:$margin + px;
+	.ml-#{$margin} {
+		margin-left:$value;
+	}
+	.mb-#{$margin} {
+		margin-bottom:$value;
+	}
+	.mr-#{$margin} {
+		margin-right:$value;
+	}
+	.mt-#{$margin} {
+		margin-top:$value;
+	}
+}
+
+/* all */
+@each $side in $sides {
+	.border-#{$side}-solid {
+		position:relative;
+	}
+
+	.border-#{$side}-solid::before {
+		content:"";
+		position:absolute;
+		background-color:#000;
+	}
+}
+
+/* orizontal */
+@each $side in $sides-o {
+	.border-#{$side}-solid {
+		padding:10px;
+	}
+
+	.border-#{$side}-solid::before {
+		width:1px;
+		top:-5px;
+		bottom:-5px;
+	}
+
+	.text-#{$side} {
+		text-align:#{$side} !important;
+	}
+}
+
+/*headers*/
+@each $h in $hs {
+	h#{$h} {
+		$tmp:calc($h / 2);
+      
+		font-size:$tmp+rem;
+		display:block;
+		width:100%;
+		font-weight:550;
+	}
+}
+
+.border-left-solid::before {
+	left:0px;
+}
+
+.border-right-solid::before {
+	right:0px;
+}
+
+.halved {
+	width: 50% !important;
+}
+
+@import "./navbar.scss";
+
+/* homepage */
+.fsfxim-container {
+	min-height:600px;
+	max-height:800px;
+	position:relative;
+	overflow:hidden;
+	margin: 0 -15px;
+}
+.fsfxim-container img {
+	width:100%;
+}
+.fsfxim-container .overlay {
+	background-color:#0004;
+}
+.fsss-container .service .overlay,
+.fsfxim-container .overlay {
+	position:absolute;
+	top:0;
+	left:0;
+	right:0;
+	bottom:0;
+	display:flex;
+	align-items:center;
+	align-content:center;
+}
+.fsfxim-container .overlay *:not(.btn) {
+	width:100%;
+	text-align:center;
+}
+
+/* services */
+.fsss-container {
+	max-height:900px;
+	overflow:hidden;
+	position:relative;
+	margin-left:-15px;
+	margin-right:-15px;
+}
+
+.fsss-container .block {
+	display:flex;
+	position:absolute;
+	bottom:0;
+	left:0;
+	right:0;
+	height:200px;
+	background-image:linear-gradient(0deg, #fff8, #fff0);
+	align-items:center;
+	justify-content:center;
+}
+
+.fsss-container .block:hover {
+	background-image:linear-gradient(0deg, #ffaa3888, #fff0);
+}
+
+.fsss-container .service {
+	width:100%;
+	max-width:48%;
+	height:500px;
+	margin:1%;
+	float:left;
+	position:relative;
+}
+
+.fsss-container .service .overlay article {
+	width:100%;
+}
+.fsss-container .service .overlay * {
+	text-align:center;
+}
+
+.fscontacts-container .input-group input,
+.fscontacts-container .btn.btn-flat {
+	padding: 10px !important;
+	font-size: 1.2em;
+}
+
+.fscontacts-container .input-group input {
+	max-width: 100%;
+	width: 100%;
+}
+
+#login_form {
+	width:80%;
+	margin:0 auto;
+}

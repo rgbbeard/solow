@@ -1,0 +1,36 @@
+@import "vars.scss";
+
+@media screen and (max-width:$phone-l) {
+	main {
+		margin:0;
+		padding:0 !important;
+	}
+
+	.fsfxim-container {
+		min-height: 300px !important;
+	}
+
+	.fsfxim-container,
+	.fsss-container {
+		@each $s in $sides {
+			margin-#{$s}:0 !important;
+		}
+	}
+
+	.fsss-container .service {
+		width: 100%;
+		max-width: 100% !important;
+	}
+
+	.fsss-container .block {
+		background-image:linear-gradient(0deg, #fff4 5px, #ffaa3888 20px, #fff0) !important;
+	}
+
+	#navbar-mobile {
+		display:block !important;
+	}
+
+	#navbar {
+		display:none !important;
+	}
+}

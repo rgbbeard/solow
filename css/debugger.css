@@ -1,0 +1,24 @@
+#debugger-bar button {
+	position:fixed;
+	bottom:0;
+	right:0;
+	width:100%;
+	background-color:#111;
+	color:#0c0 !important;
+}
+
+#debugger-content h2 {
+	color:#ccc;
+}
+#debugger-content {
+	display:none;
+	width:100%;
+	background-color:#111;
+	color:#0c0;
+	padding:20px;
+	position:fixed;
+	bottom:15px;
+	top:0;
+	font-size:15px;
+	overflow-y:scroll;
+}
