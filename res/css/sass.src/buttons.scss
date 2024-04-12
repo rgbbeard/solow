@@ -23,29 +23,4 @@
 
 .btn-info {
 	background-color:$tertiary-color;
-} @import "./vars.scss";
-
-.btn {
-	display:inline-block;
-	text-align:center;
-}
-
-.btn:hover {
-	filter:brightness(90%);
-}
-
-.btn:not(.btn-sm) {
-	padding:5px 8px;
-	min-width:80px;
-}
-
-.btn.btn-lg {
-	height:40px;
-	line-height:30px;
-	min-width:100px !important;
-	font-size:18px;
-}
-
-.btn-info {
-	background-color:$tertiary-color;
 }
