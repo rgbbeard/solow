@@ -2,12 +2,19 @@
 
 namespace Router;
 
+use Exceptions\InvalidSessionException;
 use Session\SessionManager;
-use View\ContentView;
+use View\BaseView;
+use View\PublicView;
 use Service\HTTPService;
 use \Exception;
+use Exceptions\ControllerNotFoundException;
 
-SessionManager::check_session();
+try {
+	SessionManager::check_session();
+} catch (InvalidSessionException $ise) {
+	echo $ise->getMessage();
+}
 
 class Router {
 	/**
@@ -17,12 +24,22 @@ class Router {
 	 */
 	protected const routes_path = "sys/config/routes.ini";
 	protected static ?array $routes = null;
-	protected static string $current_route = "";
+	/** 
+	 * Setting the default selected route
+	 * used in navigation to highlight
+	 * the current viewed page
+	 */
+	public static string $current_route = "home";
 
-	protected ContentView $contentView;
+	protected BaseView $baseView;
+	protected PublicView $publicView;
 
 	public function __construct($path) {
-		$this->contentView = new ContentView();
+		$this->baseView = new BaseView();
+		$this->publicView = new PublicView();
+
+		$this->baseView->list_child_classes();
+
 		$params = [];
 		
 		if(self::has_get_data()) {
@@ -34,17 +51,21 @@ class Router {
 		$this->watch($path, $params);
 	}
 
+	public static function get_current_route(): string {
+		return self::$current_route;
+	}
+
 	# A POST request has been sent
-	public static function has_post_data() {
+	public static function has_post_data(): bool {
 		return $_SERVER["REQUEST_METHOD"] === "POST" && !empty($_POST);
 	}
 
 	# A GET request has been sent
-	public static function has_get_data() {
+	public static function has_get_data(): bool {
 		return $_SERVER["REQUEST_METHOD"] === "GET" && !empty($_GET);
 	}
 
-	public function route_has_params(string $route_name) {
+	public function route_has_params(string $route_name): bool {
 		return !@empty(self::$routes[$route_name]) 
 			&& self::$routes[$route_name]["params"] != false
 			&& count(self::$routes[$route_name]["params"]) > 0;
@@ -72,11 +93,10 @@ class Router {
 
 	/**
 	 * BUGFIX
-	 * requests parameters values are sent
+	 * request parameters' values are sent
 	 * without their associated name
 	 */
-	protected static function convert_params(array $params): array
-	{
+	protected static function convert_params(array $params): array {
 		$tmp = [];
 
 		foreach($params as $name => $value) {
@@ -91,8 +111,7 @@ class Router {
 	 * and has the required roles to view
 	 * the requested page
 	 */
-	public static function has_required_roles(array $roles): bool
-	{
+	public static function has_required_roles(array $roles): bool {
 		if(!empty($_SESSION["ROLES"])) {
 			foreach($roles as $role) {
 				if(!in_array($role, $_SESSION["ROLES"])) {
@@ -106,11 +125,25 @@ class Router {
 		return true;
 	}
 
+	protected function get_route_by_attr(string $attribute, ?string $value = null): ?string {
+		if(empty($value)) {
+			return null;
+		}
+
+		foreach(self::$routes as $name => $route) {
+			if($route[$attribute] === $value) {
+				return $name;
+			}
+		}
+
+		return null;
+	}
+
 	/**
 	 * Check for the permission to view
-	 * the requested page and renders it
+	 * the requested page and render it
 	 */
-	public function goto(string $route_name, array $params = []) {
+	public function goto(string $route_name, string $path_info, array $params = []) {
 		$route = self::$routes[$route_name];
 
 		if(@!empty($route["scripts"])) {
@@ -122,22 +155,30 @@ class Router {
 			info_log("Authentication needed");
 			$path = "";
 			$auth_route = self::$routes[$route["authentication"]];
+			
+			if(defined("localhost_base") && !empty(localhost_base)) {
+				$path .= "/" . localhost_base;
 
-			if(self::$current_route != $route_name) {
+				if(!str_contains($path_info, localhost_base)) {
+					$path_info = "/" . localhost_base . $path_info;
+				}
+			}
+
+			$path .= $auth_route["path"];
+
+			if($path_info !== $path) {
 				info_log("Getting login route for: $route_name");
 
-				if(defined("localhost_base") && !empty(localhost_base)) {
-					$path .= "/" . localhost_base;
-				}
-
-				$path .= $auth_route["path"];
 
 				if(!headers_sent()) {
 					info_log("Going to the authentication page");
 
 					# Goto the authentication page
-					header("Location: $path");
-					die();
+					$auth_route_name = $this->get_route_by_attr("function", $auth_route["function"]);
+
+					if(!empty($auth_route_name)) {
+						$route = self::$routes[$auth_route_name];
+					}
 				} else {
 					die("A request has already been sent.");
 				}
@@ -145,21 +186,31 @@ class Router {
 		}
 
 		info_log("Calling view: " . $route["function"]);
-
-		self::$current_route = $route_name;
-
 		if($this->route_has_params($route_name)) {
 			$params = $this->extract_url_params($route_name);
 		}
+
+		# Used for navigation
+		self::$current_route = $route_name;
 
 		# Reset params
 		$p = [];
 		$p["params"] = json_encode($params);
 
-		call_user_func_array([
-			$this->contentView,
-			$route["function"]
-		], array_values($p));
+		if(!empty($route) && $route["function"]) {
+			try {
+				# Dynamically find the correct controller
+				$controllerClass = $this->baseView->find_owner_of($route["function"]);
+				$controllerInstance = new $controllerClass();
+
+				call_user_func_array([
+					$controllerInstance,
+					$route["function"]
+				], array_values($p));
+			} catch(ControllerNotFoundException $e) {
+				info_log($e->getMessage(), 2);
+			}
+		}
 	}
 
 	public function watch($path_info, array $params) {
@@ -172,25 +223,52 @@ class Router {
 		$path_info = implode("/", $path_info);
 
 		try {
-			foreach(self::$routes as $name => $route) {
-				switch($route["match_type"]) {
-					case "regex":
-						if(preg_match("/" . $route["path"] . "/", $path_info)) {
-							if (!empty($route["params"]) && !empty($params)) {
-								
-							} else {
-								$match = true;
-								$this->goto($name, $params);
+			$name = "home";
+			$route = self::$routes[$name];
+
+			# no specific path given, going home
+			if(!empty($path_info)) {
+				foreach(self::$routes as $n => $r) {
+					$regex = str_replace("/", "\/", $r["path"]);
+
+					if(preg_match("/^$regex/", $path_info)) {
+						if(empty($r["path"])) {
+							continue;
+						}
+
+						$path_diff = str_replace($r["path"], "", $path_info);
+						$path_diff = preg_replace("/^\//", "", $path_diff);
+						$path_params = array_clear(explode("/", $path_diff));
+
+						if($r["match_type"] === "regex") {
+							if(count($path_params) === count($r["params"])) {
+								$name = $n;
+								$route = $r;
+								break;
+							}
+						} else {
+							if(empty($path_diff)) {
+								$name = $n;
+								$route = $r;
+								break;
 							}
 						}
-						break;
-					case "plain":
-						if($path_info === $route["path"]) {
-							$match = true;
-							$this->goto($name, $params);
-						}
-						break;
+					}
 				}
+			}
+
+			if(!empty($name) && !empty($route)) {
+				$match = true;
+				
+				if($route["match_type"] === "regex") {
+					$params = $this->extract_url_params($name);
+				}
+
+				info_log("Matched route name: $name");
+
+				$this->goto($name, $path_info, $params);
+			} else {
+				info_log("No route matched, going 404..", 3);
 			}
 		} catch(Exception $ignore) {}
 
@@ -202,15 +280,10 @@ class Router {
 		# Catch http response
 		if(http_response_code() !== 200) {
 			# Display server error page
-			$this->contentView->render_http_response(
+			$this->publicView->render_http_response(
 				new HTTPService(http_response_code())
 			);
 		}
-	}
-
-	public static function get_current_route(): string
-	{
-		return self::$current_route;
 	}
 
 	public static function set_routes() {
@@ -231,7 +304,7 @@ class Router {
 					break;
 				} elseif(($route["match_type"] === "plain" || $route["match_type"] === "regex") 
 					&& !@empty($route["params"]) && !@empty($params)) {
-					$link .= "$name";
+					$link .= $route["path"];
 
 					try {
 						$expr = implode("/", $route["params"]);
@@ -245,11 +318,10 @@ class Router {
 		return $link;
 	}
 
-	private function extract_url_params(string $route_name): array {
+	private function extract_url_params(string $route_name, ?string $url = null): array {
 	    # parse the url
-	    $path = parse_url($_SERVER["REQUEST_URI"], PHP_URL_PATH);
-	    $path_segments = explode('/', trim($path, '/'));
-
+	    $path = parse_url($url ?? $_SERVER["REQUEST_URI"], PHP_URL_PATH);
+	    $path_segments = explode("/", trim($path, "/"));
 
 	    # remove localhost
 	    if(defined("localhost_base")) {
@@ -258,7 +330,15 @@ class Router {
 
 	    foreach(self::$routes as $name => $route) {
 	        if($name === $route_name) {
-			    if($path_segments[0] == $route["path"]) {
+	        	if(str_contains($route["path"], "/")) {
+	        		foreach(explode("/", trim($route["path"], "/")) as $rp) {
+	        			foreach($path_segments as $index => $ps) {
+	        				if($ps == $rp) {
+							    $path_segments = array_exclude($path_segments, $index);
+				    		}
+	        			}
+	        		}
+	        	} elseif($path_segments[0] == $route["path"]) {
 				    $path_segments = array_exclude($path_segments, 0);
 	    		}
 

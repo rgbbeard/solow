@@ -8,7 +8,7 @@
  * NOTE: remember to delete the content of this constant before
  * deploying to production!!!
  */
-define("localhost_base", "mywebsite/");
+define("localhost_base", "nwfaresgroup/");
 define("is_localhost", (defined("localhost_base") && !empty(localhost_base)));
 
 # Functions and objects
@@ -16,7 +16,10 @@ require_once "sys/session.php";
 require_once "sys/router.php";
 require_once "sys/utils.php";
 require_once "sys/mysqldb.php";
-require_once "sys/views.php";
+require_once "sys/views/base_view_interface.php";
+require_once "sys/views/base_view.php";
+require_once "sys/views/public_view.php";
+require_once "sys/views/admin_view.php";
 require_once "sys/services.php";
 
 use Session\SessionManager;

@@ -14,7 +14,7 @@ class SessionManager {
 	/**
 	 * @throws InvalidSessionException
 	 */
-	public static function check_session() {
+	public static function check_session(): string {
 		switch(session_status()) {
 			case PHP_SESSION_DISABLED:
 				throw new InvalidSessionException("Sessions are disabled");
@@ -24,6 +24,8 @@ class SessionManager {
 			case PHP_SESSION_ACTIVE:
 				return session_id();
 		}
+		
+		return session_id();
 	}
 	
 	/**
@@ -41,4 +43,3 @@ class SessionManager {
 		session_start();
 	}
 }
-?>

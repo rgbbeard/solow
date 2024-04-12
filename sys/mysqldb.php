@@ -4,7 +4,7 @@ namespace Database;
 class MySQL {
 	protected ?\PDO $connection = null;
 	protected static bool $localhost = false;
-	protected $prepare = null;
+	protected ?\PDOStatement $prepare = null;
 	public array $result = [];
 	public int $rows = 0;
 

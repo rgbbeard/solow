@@ -31,6 +31,10 @@ function info_log(string $message, int $type = 1) {
     error_log("[$log_type] $message");
 }
 
+function first(array $target) {
+    return array_shift($target);
+}
+
 function array_delast(array $target): array {
     array_pop($target);
     return $target;
@@ -43,6 +47,16 @@ function array_exclude(array $target, $element) {
             continue;
         }
         $temp[] = $target[$x];
+    }
+    return $temp;
+}
+
+function array_clear(array $target) {
+    $temp = [];
+    foreach($target as $item) {
+        if(!empty($item)) {
+            $temp[] = $item;
+        }
     }
     return $temp;
 }

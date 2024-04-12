@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
 	<head>
-		<title>Error - MyWebsite</title>
+		<title>Error - Fares Group</title>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<link rel="icon" type="image/png" sizes="32x32" href="res/img/favicon.png"/>
